@@ -68,7 +68,7 @@ weightedGood(E,N1*N2,M) :- good(E,X,M), m_Weight(M,N1), t_Weight(E,N2).
 weightedBad(E,N1*N2,M) :- bad(E,X,M), m_Weight(M,N1), t_Weight(E,N2).
 weight(E,1) :- good(E,X,M).
 weight(E,1) :- bad(E,X,M).
-final_weight(E,N1-N3) :- event(E), N1=#sum\{N2 : weightedGood(E,N2,M1)\}, N3=#sum\{N4 : weightedBad(E,N4,M2)\}.
+final_weight(E,N1-N3) :- event(E), N1=#sum{N2 : weightedGood(E,N2,M1)}, N3=#sum{N4 : weightedBad(E,N4,M2)}.
 
 
 % THEORIES OF THE RIGHT
@@ -153,41 +153,40 @@ performs(shooter, shoot(enemy), 2).
 %#show per/2.
 %#show imp/2.
 
-% WEIGHT\
-%#show weight/2.\
-%#show good/3.\
-%#show bad/3.\
-%#show weightedGood/3.\
-%#show weightedBad/3.\
-\
-% PURE BAD\
-%#show goodCons/3.\
-%#show badCons/3.\
-\
+% WEIGHT
+%#show weight/2.
+%#show good/3.
+%#show bad/3.
+%#show weightedGood/3.
+%#show weightedBad/3.
+
+% PURE BAD
+%#show goodCons/3.
+%#show badCons/3.
+
 % LEAST BAD\
-%#show worse/2.\
-%#show notWorstCons/4.\
-%#show worstCons/4.\
-\
-% BENEFITS OUTWEIGH\
-%#show weightCons/5.\
-%#show weightAct/2.\
-\
-% RULE UTI\
-%#show instance/2.\
-%#show ruleCount/2.\
-%#show weightRule/2.\
-\
-% KANT\
-%#show aim/2.\
-\
-%#show performs/4.\
-%#show occurs/3.\
-%#show holds/3.\
-%#show initiates/4.\
-%#show terminates/4.\
-%#show clipped/3.\
-%#show incomplete/3.\
-%#show possible/3.\
-%#show cons/4.\
+%#show worse/2.
+%#show notWorstCons/4.
+%#show worstCons/4.
+
+% BENEFITS OUTWEIGH
+%#show weightCons/5.
+%#show weightAct/2.
+% RULE UTI
+%#show instance/2.
+%#show ruleCount/2.
+%#show weightRule/2.
+
+% KANT
+%#show aim/2.
+
+%#show performs/4.
+%#show occurs/3.
+%#show holds/3.
+%#show initiates/4.
+%#show terminates/4.
+%#show clipped/3.
+%#show incomplete/3.
+%#show possible/3.
+%#show cons/4.
 %#show nonInertial/1. }
