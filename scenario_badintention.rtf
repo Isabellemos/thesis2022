@@ -68,7 +68,7 @@ weightedGood(E,N1*N2,M) :- good(E,X,M), m_Weight(M,N1), t_Weight(E,N2).
 weightedBad(E,N1*N2,M) :- bad(E,X,M), m_Weight(M,N1), t_Weight(E,N2).
 weight(E,1) :- good(E,X,M).
 weight(E,1) :- bad(E,X,M).
-final_weight(E,N1-N3) :- event(E), N1=#sum\{N2 : weightedGood(E,N2,M1)\}, N3=#sum\{N4 : weightedBad(E,N4,M2)\}.\
+final_weight(E,N1-N3) :- event(E), N1=#sum\{N2 : weightedGood(E,N2,M1)\}, N3=#sum\{N4 : weightedBad(E,N4,M2)\}.
 
 
 % THEORIES OF THE RIGHT
@@ -76,10 +76,10 @@ final_weight(E,N1-N3) :- event(E), N1=#sum\{N2 : weightedGood(E,N2,M1)\}, N3=#su
 %% CONSEQUENTIALISM
 
 %%% PRINCIPLE OF BENEFITS VS COSTS
-weightCons(A,T,E,N):- event(A), cons(A,T,E), final_weight(E,N).\
-weightAct(A,N):- event(A), N=#sum\{N1 : weightCons(A,T,E,N1)\}.\
-imp(benefitsCosts,A):- weightAct(A,N), N<0.\
-per(benefitsCosts,A):- event(A), not imp(benefitsCosts,A).\
+weightCons(A,T,E,N):- event(A), cons(A,T,E), final_weight(E,N).
+weightAct(A,N):- event(A), N=#sum\{N1 : weightCons(A,T,E,N1)\}.
+imp(benefitsCosts,A):- weightAct(A,N), N<0.
+per(benefitsCosts,A):- event(A), not imp(benefitsCosts,A).
 
 %%% Deontology 
 
@@ -101,7 +101,7 @@ neg(neg(F)) :- fluent(F), holds(F).
 cons(A, B) :- cons(A, T, B), time(T).
 believes(X, cons(A, B)) :- cons(A, B), agent(X), event(A), event(B).
 
-intention(X, B) :- intention(X, A), believes(X, cons(A, B)).\
+intention(X, B) :- intention(X, A), believes(X, cons(A, B)).
 
 badintention(X, A) :- intention(X, A), bad(A,Y,M). 
 goodintention(X, A) :- intention(X, A), good(A,Y,M).
@@ -109,8 +109,8 @@ goodintention(X, A) :- intention(X, A), good(A,Y,M).
 badintention(X, B) :- badintention(X, A), believes(X, cons(B, A)).
 goodintention(X, B) :- goodintention(X, A), believes(X, cons(B, A)).
 
-effect(kill(X), involves(X)) :- event(kill(X)).\
-effect(dies(X), involves(X)) :- event(dies(X)).\
+effect(kill(X), involves(X)) :- event(kill(X)).
+effect(dies(X), involves(X)) :- event(dies(X)).
 
 %%% *** SCENARIO
 time(0..7).
