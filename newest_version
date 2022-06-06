@@ -19,7 +19,7 @@ clipped(neg(F), T) :- holds(F, T+1), time(T), fluent(F).
 
 holds(F,T):- initiates(E,F,T-1), time(T).
 holds(F,T):- holds(F,T-1), not clipped(F,T-1), not nonInertial(F), time(T).
-holds(F, T) :- initially(F), not clipped(0, F, T), fluent(F), action(A), time(T).
+%holds(F, T) :- initially(F), not clipped(0, F, T), fluent(F), action(A), time(T).
 %holds(F, T2) :- occurs(A, T1), initiates(A, F, T1), T1 < T2, not clipped(T1, F, T2), fluent(F), action(A), time(T1), time(T2).
 
 
