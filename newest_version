@@ -202,3 +202,5 @@ believes(shooter, cons(kill(enemy), dies(enemy))).
 performs(shooter, load(gun), 2).
 performs(shooter, shoot(enemy), 4).
 performs(shooter, kill(enemy), 5). 
+
+
