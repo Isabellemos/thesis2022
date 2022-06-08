@@ -1,0 +1,838 @@
+action(kill 
+ *  enemy) 
+
+action(load 
+ *  gun) 
+
+action(shoot 
+ *  enemy) 
+
+agent 
+ *  shooter
+ *  enemy 
+
+bad(dies 
+ *  enemy), enemy, life 
+
+bad(kill 
+ *  enemy), enemy, life 
+
+bad(shoot 
+ *  enemy), enemy, life 
+
+believes(shooter,cons(kill(enemy),dies 
+ *  enemy)) 
+
+believes(shooter,cons(load(gun),shoot 
+ *  enemy)) 
+
+believes(shooter,cons(shoot(enemy),kill 
+ *  enemy)) 
+
+clipped 
+ *  life, 5
+ *  life, 6
+ *  life, 7
+ *  life, 4 
+
+clipped(alive 
+ *  enemy), 6
+ *  enemy), 7 
+
+clipped(badintention(shooter,dies 
+ *  enemy)), 6
+ *  enemy)), 7 
+
+clipped(badintention(shooter,kill 
+ *  enemy)), 5 
+
+clipped(badintention(shooter,load 
+ *  gun)), 2 
+
+clipped(badintention(shooter,shoot 
+ *  enemy)), 4 
+
+clipped(flying 
+ *  bullet), 5 
+
+clipped(intention(shooter,dies 
+ *  enemy)), 6
+ *  enemy)), 7 
+
+clipped(intention(shooter,kill 
+ *  enemy)), 5 
+
+clipped(intention(shooter,load 
+ *  gun)), 2 
+
+clipped(intention(shooter,shoot 
+ *  enemy)), 4 
+
+clipped(loaded 
+ *  gun), 4 
+
+clipped(neg(alive 
+ *  enemy)), 0
+ *  enemy)), 1
+ *  enemy)), 2
+ *  enemy)), 3
+ *  enemy)), 4
+ *  enemy)), 5 
+
+clipped(neg(dying 
+ *  enemy)), 5
+ *  enemy)), 6 
+
+clipped(neg(flying 
+ *  bullet)), 4 
+
+clipped(neg(intention(shooter,dies 
+ *  enemy))), 0
+ *  enemy))), 1
+ *  enemy))), 2
+ *  enemy))), 3
+ *  enemy))), 4
+ *  enemy))), 5 
+
+clipped(neg(intention(shooter,kill 
+ *  enemy))), 0
+ *  enemy))), 1
+ *  enemy))), 2
+ *  enemy))), 3
+ *  enemy))), 4 
+
+clipped(neg(intention(shooter,load 
+ *  gun))), 0
+ *  gun))), 1 
+
+clipped(neg(intention(shooter,shoot 
+ *  enemy))), 0
+ *  enemy))), 1
+ *  enemy))), 2
+ *  enemy))), 3 
+
+clipped(neg(loaded 
+ *  gun)), 2
+ *  gun)), 3 
+
+cons(dies(enemy),6,involves 
+ *  enemy) 
+
+cons(dies(enemy),6,neg 
+ *  life) 
+
+cons(dies(enemy),6,neg(alive 
+ *  enemy)) 
+
+cons(dies(enemy),6,neg(intention(shooter,dies 
+ *  enemy))) 
+
+cons(dies(enemy),7,involves 
+ *  enemy) 
+
+cons(dies(enemy),7,neg 
+ *  life) 
+
+cons(dies(enemy),7,neg(alive 
+ *  enemy)) 
+
+cons(dies(enemy),7,neg(intention(shooter,dies 
+ *  enemy))) 
+
+cons(dies(enemy),involves 
+ *  enemy) 
+
+cons(dies(enemy),neg 
+ *  life) 
+
+cons(dies(enemy),neg(alive 
+ *  enemy)) 
+
+cons(dies(enemy),neg(intention(shooter,dies 
+ *  enemy))) 
+
+cons(dying(enemy),6,dies 
+ *  enemy) 
+
+cons(dying(enemy),7,dies 
+ *  enemy) 
+
+cons(dying(enemy),dies 
+ *  enemy) 
+
+cons(flying(bullet),5,kill 
+ *  enemy) 
+
+cons(flying(bullet),kill 
+ *  enemy) 
+
+cons(kill(enemy),5,dies 
+ *  enemy) 
+
+cons(kill(enemy),5,dying 
+ *  enemy) 
+
+cons(kill(enemy),5,involves 
+ *  enemy) 
+
+cons(kill(enemy),5,neg 
+ *  life) 
+
+cons(kill(enemy),5,neg(flying 
+ *  bullet)) 
+
+cons(kill(enemy),dies 
+ *  enemy) 
+
+cons(kill(enemy),dying 
+ *  enemy) 
+
+cons(kill(enemy),involves 
+ *  enemy) 
+
+cons(kill(enemy),neg 
+ *  life) 
+
+cons(kill(enemy),neg(flying 
+ *  bullet)) 
+
+cons(load(gun),2,dies 
+ *  enemy) 
+
+cons(load(gun),2,kill 
+ *  enemy) 
+
+cons(load(gun),2,loaded 
+ *  gun) 
+
+cons(load(gun),2,neg(intention(shooter,load 
+ *  gun))) 
+
+cons(load(gun),2,shoot 
+ *  enemy) 
+
+cons(load(gun),dies 
+ *  enemy) 
+
+cons(load(gun),kill 
+ *  enemy) 
+
+cons(load(gun),loaded 
+ *  gun) 
+
+cons(load(gun),neg(intention(shooter,load 
+ *  gun))) 
+
+cons(load(gun),shoot 
+ *  enemy) 
+
+cons(loaded(gun),4,shoot 
+ *  enemy) 
+
+cons(loaded(gun),shoot 
+ *  enemy) 
+
+cons(neg(loaded(gun)),2,load 
+ *  gun) 
+
+cons(neg(loaded(gun)),load 
+ *  gun) 
+
+cons(shoot(enemy),4,dies 
+ *  enemy) 
+
+cons(shoot(enemy),4,flying 
+ *  bullet) 
+
+cons(shoot(enemy),4,involves 
+ *  enemy) 
+
+cons(shoot(enemy),4,kill 
+ *  enemy) 
+
+cons(shoot(enemy),4,neg 
+ *  life) 
+
+cons(shoot(enemy),4,neg(loaded 
+ *  gun)) 
+
+cons(shoot(enemy),dies 
+ *  enemy) 
+
+cons(shoot(enemy),flying 
+ *  bullet) 
+
+cons(shoot(enemy),involves 
+ *  enemy) 
+
+cons(shoot(enemy),kill 
+ *  enemy) 
+
+cons(shoot(enemy),neg 
+ *  life) 
+
+cons(shoot(enemy),neg(loaded 
+ *  gun)) 
+
+effect(dies(enemy),involves 
+ *  enemy) 
+
+effect(dies(enemy),neg 
+ *  life) 
+
+effect(dies(enemy),neg(alive 
+ *  enemy)) 
+
+effect(dies(enemy),neg(intention(shooter,dies 
+ *  enemy))) 
+
+effect(kill(enemy),dying 
+ *  enemy) 
+
+effect(kill(enemy),involves 
+ *  enemy) 
+
+effect(kill(enemy),neg 
+ *  life) 
+
+effect(kill(enemy),neg(flying 
+ *  bullet)) 
+
+effect(load(gun),loaded 
+ *  gun) 
+
+effect(load(gun),neg(intention(shooter,load 
+ *  gun))) 
+
+effect(shoot(enemy),flying 
+ *  bullet) 
+
+effect(shoot(enemy),involves 
+ *  enemy) 
+
+effect(shoot(enemy),neg 
+ *  life) 
+
+effect(shoot(enemy),neg(loaded 
+ *  gun)) 
+
+event(dies 
+ *  enemy) 
+
+event(kill 
+ *  enemy) 
+
+event(load 
+ *  gun) 
+
+event(shoot 
+ *  enemy) 
+
+final_weight(dies 
+ *  enemy), -1 
+
+final_weight(kill 
+ *  enemy), -1 
+
+final_weight(load 
+ *  gun), 0 
+
+final_weight(shoot 
+ *  enemy), -1 
+
+fluent(alive 
+ *  enemy) 
+
+fluent(dying 
+ *  enemy) 
+
+fluent(flying 
+ *  bullet) 
+
+fluent(intention(shooter,dies 
+ *  enemy)) 
+
+fluent(intention(shooter,kill 
+ *  enemy)) 
+
+fluent(intention(shooter,load 
+ *  gun)) 
+
+fluent(intention(shooter,shoot 
+ *  enemy)) 
+
+fluent(loaded 
+ *  gun) 
+
+holds(alive 
+ *  enemy), 0
+ *  enemy), 1
+ *  enemy), 2
+ *  enemy), 3
+ *  enemy), 4
+ *  enemy), 5
+ *  enemy), 6 
+
+holds(badintention(shooter,dies 
+ *  enemy)), 1
+ *  enemy)), 2
+ *  enemy)), 3
+ *  enemy)), 4
+ *  enemy)), 5
+ *  enemy)), 6 
+
+holds(badintention(shooter,kill 
+ *  enemy)), 1
+ *  enemy)), 2
+ *  enemy)), 3
+ *  enemy)), 4
+ *  enemy)), 5 
+
+holds(badintention(shooter,shoot 
+ *  enemy)), 1
+ *  enemy)), 2
+ *  enemy)), 3
+ *  enemy)), 4 
+
+holds(dying 
+ *  enemy), 6
+ *  enemy), 7 
+
+holds(flying 
+ *  bullet), 5 
+
+holds(intention(shooter,dies 
+ *  enemy)), 1
+ *  enemy)), 2
+ *  enemy)), 3
+ *  enemy)), 4
+ *  enemy)), 5
+ *  enemy)), 6 
+
+holds(intention(shooter,kill 
+ *  enemy)), 1
+ *  enemy)), 2
+ *  enemy)), 3
+ *  enemy)), 4
+ *  enemy)), 5 
+
+holds(intention(shooter,load 
+ *  gun)), 1
+ *  gun)), 2 
+
+holds(intention(shooter,shoot 
+ *  enemy)), 1
+ *  enemy)), 2
+ *  enemy)), 3
+ *  enemy)), 4 
+
+holds(involves 
+ *  enemy), 5
+ *  enemy), 6
+ *  enemy), 7
+ *  enemy), 8
+ *  enemy), 9
+ *  enemy), 10 
+
+holds(loaded 
+ *  gun), 3
+ *  gun), 4 
+
+holds(neg 
+ *  life), 5
+ *  life), 6
+ *  life), 7
+ *  life), 8
+ *  life), 9
+ *  life), 10 
+
+holds(neg(alive 
+ *  enemy)), 7
+ *  enemy)), 8
+ *  enemy)), 9
+ *  enemy)), 10 
+
+holds(neg(dying 
+ *  enemy)), 0
+ *  enemy)), 1
+ *  enemy)), 2
+ *  enemy)), 3
+ *  enemy)), 4
+ *  enemy)), 5 
+
+holds(neg(flying 
+ *  bullet)), 0
+ *  bullet)), 1
+ *  bullet)), 2
+ *  bullet)), 3
+ *  bullet)), 4
+ *  bullet)), 6
+ *  bullet)), 7
+ *  bullet)), 8
+ *  bullet)), 9
+ *  bullet)), 10 
+
+holds(neg(intention(shooter,dies 
+ *  enemy))), 7
+ *  enemy))), 8
+ *  enemy))), 9
+ *  enemy))), 10 
+
+holds(neg(intention(shooter,load 
+ *  gun))), 3
+ *  gun))), 4
+ *  gun))), 5
+ *  gun))), 6
+ *  gun))), 7
+ *  gun))), 8
+ *  gun))), 9
+ *  gun))), 10 
+
+holds(neg(loaded 
+ *  gun)), 0
+ *  gun)), 1
+ *  gun)), 2
+ *  gun)), 5
+ *  gun)), 6
+ *  gun)), 7
+ *  gun)), 8
+ *  gun)), 9
+ *  gun)), 10 
+
+imp(benefitsCosts,kill 
+ *  enemy) 
+
+imp(benefitsCosts,load 
+ *  gun) 
+
+imp(benefitsCosts,shoot 
+ *  enemy) 
+
+imp(dde1,dies 
+ *  enemy) 
+
+imp(dde1,kill 
+ *  enemy) 
+
+imp(dde1,shoot 
+ *  enemy) 
+
+imp(dde2,dies 
+ *  enemy) 
+
+imp(dde2,kill 
+ *  enemy) 
+
+imp(dde2,shoot 
+ *  enemy) 
+
+imp(dde4,kill 
+ *  enemy) 
+
+imp(dde4,load 
+ *  gun) 
+
+imp(dde4,shoot 
+ *  enemy) 
+
+incomplete(dies 
+ *  enemy), 0
+ *  enemy), 1
+ *  enemy), 2
+ *  enemy), 3
+ *  enemy), 4
+ *  enemy), 5
+ *  enemy), 8
+ *  enemy), 9
+ *  enemy), 10 
+
+incomplete(kill 
+ *  enemy), 0
+ *  enemy), 1
+ *  enemy), 2
+ *  enemy), 3
+ *  enemy), 4
+ *  enemy), 6
+ *  enemy), 7
+ *  enemy), 8
+ *  enemy), 9
+ *  enemy), 10 
+
+incomplete(load 
+ *  gun), 3
+ *  gun), 4 
+
+incomplete(neg(alive 
+ *  enemy)), 0
+ *  enemy)), 1
+ *  enemy)), 2
+ *  enemy)), 3
+ *  enemy)), 4
+ *  enemy)), 5
+ *  enemy)), 8
+ *  enemy)), 9
+ *  enemy)), 10 
+
+incomplete(shoot 
+ *  enemy), 0
+ *  enemy), 1
+ *  enemy), 2
+ *  enemy), 5
+ *  enemy), 6
+ *  enemy), 7
+ *  enemy), 8
+ *  enemy), 9
+ *  enemy), 10 
+
+initially(alive 
+ *  enemy) 
+
+initially(neg(dying 
+ *  enemy)) 
+
+initially(neg(flying 
+ *  bullet)) 
+
+initially(neg(loaded 
+ *  gun)) 
+
+initiates(dies(enemy),involves 
+ *  enemy), 6
+ *  enemy), 7 
+
+initiates(dies(enemy),neg 
+ *  life), 6
+ *  life), 7 
+
+initiates(dies(enemy),neg(alive 
+ *  enemy)), 6
+ *  enemy)), 7 
+
+initiates(dies(enemy),neg(intention(shooter,dies 
+ *  enemy))), 6
+ *  enemy))), 7 
+
+initiates(kill(enemy),dying 
+ *  enemy), 5
+ *  enemy), 6 
+
+initiates(kill(enemy),involves 
+ *  enemy), 5 
+
+initiates(kill(enemy),neg 
+ *  life), 5 
+
+initiates(kill(enemy),neg(flying 
+ *  bullet)), 5 
+
+initiates(load(gun),loaded 
+ *  gun), 2 
+
+initiates(load(gun),neg(intention(shooter,load 
+ *  gun))), 2 
+
+initiates(shoot(enemy),flying 
+ *  bullet), 4 
+
+initiates(shoot(enemy),involves 
+ *  enemy), 4 
+
+initiates(shoot(enemy),neg 
+ *  life), 4 
+
+initiates(shoot(enemy),neg(loaded 
+ *  gun)), 4
+ *  gun), 3) 
+
+m_Weight 
+ *  life, 1 
+
+modality 
+ *  life 
+
+nonInertial(dying 
+ *  enemy) 
+
+occurs(dies 
+ *  enemy), 6
+ *  enemy), 7 
+
+occurs(kill 
+ *  enemy), 5 
+
+occurs(load 
+ *  gun), 2 
+
+occurs(shoot 
+ *  enemy), 4 
+
+per(benefitsCosts,dies 
+ *  enemy) 
+
+per(dde,load 
+ *  gun) 
+
+performs(shooter,kill 
+ *  enemy), 5 
+
+performs(shooter,load 
+ *  gun), 2 
+
+performs(shooter,shoot 
+ *  enemy), 4 
+
+possible(dies 
+ *  enemy), 6
+ *  enemy), 7 
+
+possible(kill 
+ *  enemy), 5 
+
+possible(load 
+ *  gun), 0
+ *  gun), 1
+ *  gun), 2
+ *  gun), 5
+ *  gun), 6
+ *  gun), 7
+ *  gun), 8
+ *  gun), 9
+ *  gun), 10 
+
+possible(shoot 
+ *  enemy), 3
+ *  enemy), 4 
+
+precond(dying(enemy),dies 
+ *  enemy) 
+
+precond(dying(enemy),neg(alive 
+ *  enemy)) 
+
+precond(flying(bullet),kill 
+ *  enemy) 
+
+precond(loaded(gun),shoot 
+ *  enemy) 
+
+precond(neg(loaded(gun)),load 
+ *  gun) 
+
+right 
+ *  life 
+
+t_Weight(dies 
+ *  enemy), 1 
+
+t_Weight(kill 
+ *  enemy), 1 
+
+t_Weight(shoot 
+ *  enemy), 1 
+
+terminates(dies 
+ *  enemy), life, 6
+ *  enemy), life, 7 
+
+terminates(dies(enemy),alive 
+ *  enemy), 6
+ *  enemy), 7 
+
+terminates(dies(enemy),badintention(shooter,dies 
+ *  enemy)), 6
+ *  enemy)), 7 
+
+terminates(dies(enemy),intention(shooter,dies 
+ *  enemy)), 6
+ *  enemy)), 7 
+
+terminates(kill 
+ *  enemy), life, 5 
+
+terminates(kill(enemy),badintention(shooter,kill 
+ *  enemy)), 5 
+
+terminates(kill(enemy),flying 
+ *  bullet), 5 
+
+terminates(kill(enemy),intention(shooter,kill 
+ *  enemy)), 5 
+
+terminates(load(gun),badintention(shooter,load 
+ *  gun)), 2 
+
+terminates(load(gun),intention(shooter,load 
+ *  gun)), 2 
+
+terminates(shoot 
+ *  enemy), life, 4 
+
+terminates(shoot(enemy),badintention(shooter,shoot 
+ *  enemy)), 4 
+
+terminates(shoot(enemy),intention(shooter,shoot 
+ *  enemy)), 4 
+
+terminates(shoot(enemy),loaded 
+ *  gun), 4 
+
+time 
+ *  0
+ *  1
+ *  2
+ *  3
+ *  4
+ *  5
+ *  6
+ *  7
+ *  8
+ *  9
+ *  10 
+
+weight(dies 
+ *  enemy), 1 
+
+weight(kill 
+ *  enemy), 1 
+
+weight(shoot 
+ *  enemy), 1 
+
+weightAct(dies 
+ *  enemy), 0 
+
+weightAct(kill 
+ *  enemy), -1 
+
+weightAct(load 
+ *  gun), -1 
+
+weightAct(shoot 
+ *  enemy), -1 
+
+weightCons(kill(enemy),5,dies 
+ *  enemy), -1 
+
+weightCons(load(gun),2,dies 
+ *  enemy), -1 
+
+weightCons(load(gun),2,kill 
+ *  enemy), -1 
+
+weightCons(load(gun),2,shoot 
+ *  enemy), -1 
+
+weightCons(shoot(enemy),4,dies 
+ *  enemy), -1 
+
+weightCons(shoot(enemy),4,kill 
+ *  enemy), -1 
+
+weightedBad(dies 
+ *  enemy), 1, life 
+
+weightedBad(kill 
+ *  enemy), 1, life 
+
+weightedBad(shoot 
+ *  enemy), 1, life 
