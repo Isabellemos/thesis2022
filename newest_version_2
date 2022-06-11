@@ -196,7 +196,7 @@ effect(kill(enemy), dying(enemy)).
 occurs(dies(enemy), T) :- holds(dying(enemy), T), time(T).
 
 terminates(dies(enemy), intention(shooter, dies(enemy)), T) :- holds(intention(shooter, dies(enemy)), T), occurs(dies(enemy), T), time(T).
-terminates(dies(enemy), intention(shooter, defend_self(shooter), T) :- holds(intention(shooter, defend_self(shooter), T), occurs(dies(enemy), T), time(T)
+terminates(dies(enemy), intention(shooter, defend_self(shooter)), T) :- holds(intention(shooter, defend_self(shooter)), T), occurs(dies(enemy), T), time(T).
 
 terminates(dies(enemy), alive(enemy), T), initiates(dies(enemy), neg(alive(enemy)), T) :- holds(alive(enemy), T), occurs(dies(enemy), T), time(T).
 
