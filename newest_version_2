@@ -175,6 +175,7 @@ precond(loaded(gun), shoot(enemy)).
 effect(shoot(enemy), neg(loaded(gun))). 
 effect(shoot(enemy), flying(bullet)).
 
+cons(shoot(enemy), save_own_life(soldier), T) :- performs(shooter, shoot(enemy), T). 
 
 % KILL (not performed directly, occurs if the shooting is performed)
 
@@ -200,13 +201,21 @@ effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
 
 % INTENTIONS
 
-% The agent has the intention to shoot at time 1. 
+% The agent has the intention to defend himself at time 1. 
+
 holds(intention(shooter, load(gun)), 1).
+holds(intention(shooter, defend_self(soldier)), 1).
 
 % The agent has beliefs about the following consequences
+% 'the effect of defending self is to kill the enemy and to save one's own life' 
+
+believes(shooter, cons(defend_self(soldier), save_own_life(soldier))).
+
 believes(shooter, cons(load(gun), shoot(enemy))). 
 believes(shooter, cons(shoot(enemy), kill(enemy))). 
 believes(shooter, cons(kill(enemy), dies(enemy))). 
+
+
 
 performs(shooter, load(gun), 2).
 performs(shooter, shoot(enemy), 4).
