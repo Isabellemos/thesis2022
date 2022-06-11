@@ -43,11 +43,12 @@ m_Weight(M,1) :- modality(M).
 t_Weight(E,1) :- effect(E,involves(X)).
 %value(helpfulness).
 right(life).
-right(save_own_life). 
+
+%right(save_own_life). 
 
 % Modality weights 
-m_Weight(life,1) :- modality(life).
-m_Weight(save_own_life,1) :- modality(save_own_life).
+%m_Weight(life,1) :- modality(life).
+%m_Weight(save_own_life,1) :- modality(save_own_life).
 
 
 % ETHICAL EVENT SPECIFICATION
@@ -60,9 +61,7 @@ m_Weight(save_own_life,1) :- modality(save_own_life).
 effect(kill(X), neg(life)) :- event(kill(X)).
 effect(dies(X), neg(life)) :- event(dies(X)).
 
-
-
-%effect(shoot(X), neg(life)) :- event(shoot(X)).
+effect(shoot(X), neg(life)) :- event(shoot(X)).
 
 
 % VALUES
@@ -98,7 +97,7 @@ per(benefitsCosts,A):- event(A), not imp(benefitsCosts,A).
 %%% DDE (doctrine of double effect)
 imp(dde1,A) :- event(A), bad(A,Y,M).
 imp(dde2,A) :- event(A), holds(badintention(X, A), T). 
-imp(dde3,A):- event(A), cons(A,T,E1), cons(E1,T2,E2), bad(E1,Y1,M1), good(E2,Y2,M2).
+imp(dde3,A) :- event(A), cons(A,T,E1), cons(E1,T2,E2), bad(E1,Y1,M1), good(E2,Y2,M2).
 imp(dde4,A):- imp(benefitsCosts,A).
 per(dde,A):-  event(A), not imp(dde1,A), not imp(dde2,A), not imp(dde3,A). 
 
@@ -112,15 +111,15 @@ neg(neg(F)) :- fluent(F), holds(F).
 
 cons(A, B) :- cons(A, T, B), time(T).
 
-%believes(X, cons(A, B)) :- cons(A, B), agent(X), event(A), event(B).
-
-holds(intention(X,B), T) :- holds(intention(X, A), T), believes(X, cons(A, B)).
-
+holds(intention(X, B), T) :- holds(intention(X, A), T), believes(X, cons(A, B)).
 holds(badintention(X, A), T) :- holds(intention(X, A), T), bad(A,Y,M), time(T). 
+holds(goodintention(X, A), T) :- holds(intention(X, A), T), good(A,Y,M), time(T). 
+
 
 effect(kill(X), involves(X)) :- event(kill(X)).
 effect(dies(X), involves(X)) :- event(dies(X)).
 effect(shoot(X), involves(X)) :- event(shoot(X)).
+
 effect(defend_self(X), involves(X)) :- event(defend_self(X)).
 effect(save_own_life(X), involves(X)) :- event(save_own_life(X)).
 
@@ -137,8 +136,7 @@ action(shoot(enemy)).
 action(kill(enemy)).
 event(dies(enemy)).
 event(defend_self(shooter)).
-event(save_own_life(shooter)).
-
+auto(save_own_life(shooter)).
 
 fluent(alive(enemy)).
 fluent(loaded(gun)).
@@ -150,16 +148,18 @@ fluent(intention(shooter, shoot(enemy))).
 fluent(intention(shooter, kill(enemy))).
 fluent(intention(shooter, dies(enemy))).
 fluent(intention(shooter, defend_self(shooter))).
+fluent(intention(shooter, save_own_life(shooter))).
 
 nonInertial(dying(enemy)). 
+nonInertial(flying(bullet)).
 
 agent(shooter).
 agent(enemy).
 
 initially(alive(enemy)).
 initially(neg(loaded(gun))).
-initially(neg(flying(bullet))).
-initially(neg(dying(enemy))).
+initially(neg(flying(bullet))). 
+initially(neg(dying(enemy))). 
 
 % LOAD
 initiates(load(gun), loaded(gun), T) :- performs(shooter, load(gun), T), holds(neg(loaded(gun)), T), time(T).
@@ -179,10 +179,7 @@ precond(loaded(gun), shoot(enemy)).
 effect(shoot(enemy), neg(loaded(gun))). 
 effect(shoot(enemy), flying(bullet)).
 
-cons(shoot(enemy), save_own_life(shooter), T) :- performs(shooter, shoot(enemy), T). 
-
 % KILL (not performed directly, occurs if the shooting is performed)
-
 occurs(kill(enemy), T+1) :- holds(flying(bullet), T), time(T).
 terminates(kill(enemy), intention(shooter, kill(enemy)), T) :- holds(intention(shooter, kill(enemy)), T), occurs(kill(enemy), T), time(T).
 terminates(kill(enemy), flying(bullet), T), initiates(kill(enemy), neg(flying(bullet)), T) :- holds(flying(bullet), T).
@@ -206,6 +203,10 @@ precond(dying(enemy), neg(alive(enemy))).
 effect(dies(enemy), neg(alive(enemy))).
 effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
 
+% SAVE OWN LIFE 
+occurs(save_own_life(shooter)) :- holds(dying(enemy), T), time(T).
+precond(neg(alive(enemy)), save_own_life(shooter)).
+
 
 % INTENTIONS
 
@@ -214,16 +215,10 @@ effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
 holds(intention(shooter, defend_self(shooter)), 1).
 holds(intention(shooter, load(gun)), 2).
 
-% The agent has beliefs about the following consequences
-% 'the effect of defending self is to kill the enemy and to save one's own life' 
-
+% The agent has the following beliefs / expectations:
+believes(shooter, cons(load(gun), defend_self(shooter))).
+believes(shooter, cons(load(gun), save_own_life(shooter))). 
 believes(shooter, cons(defend_self(shooter), save_own_life(shooter))).
-
-believes(shooter, cons(load(gun), shoot(enemy))). 
-believes(shooter, cons(shoot(enemy), kill(enemy))). 
-believes(shooter, cons(kill(enemy), dies(enemy))). 
 
 performs(shooter, load(gun), 2).
 performs(shooter, shoot(enemy), 4).
-
-%performs(shooter, kill(enemy), 5). 
