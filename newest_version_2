@@ -136,6 +136,9 @@ action(load(gun)).
 action(shoot(enemy)).
 action(kill(enemy)).
 event(dies(enemy)).
+event(defend_self(soldier)).
+event(save_own_life(soldier)).
+
 
 fluent(alive(enemy)).
 fluent(loaded(gun)).
@@ -187,6 +190,8 @@ precond(flying(bullet), kill(enemy)).
 effect(kill(enemy), neg(flying(bullet))).
 effect(kill(enemy), dying(enemy)).
 
+
+
 % DIES (occurs when the killing happens)
 
 occurs(dies(enemy), T) :- holds(dying(enemy), T), time(T).
@@ -214,8 +219,6 @@ believes(shooter, cons(defend_self(soldier), save_own_life(soldier))).
 believes(shooter, cons(load(gun), shoot(enemy))). 
 believes(shooter, cons(shoot(enemy), kill(enemy))). 
 believes(shooter, cons(kill(enemy), dies(enemy))). 
-
-
 
 performs(shooter, load(gun), 2).
 performs(shooter, shoot(enemy), 4).
