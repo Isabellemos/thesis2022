@@ -86,9 +86,9 @@ weightAct(A,N):- event(A), N=#sum{N1 : weightCons(A,T,E,N1)}.
 imp(benefitsCosts,A):- weightAct(A,N), N<0.
 per(benefitsCosts,A):- event(A), not imp(benefitsCosts,A).
 
-%%% Deontology 
+%%% DEONTOLOGY 
 
-%%% DDE
+%%% DDE (doctrine of double effect)
 imp(dde1,A) :- event(A), bad(A,Y,M).
 imp(dde2,A) :- event(A), holds(badintention(X, A), T). 
 imp(dde3,A):- event(A), cons(A,T,E1), cons(E1,T2,E2), bad(E1,Y1,M1), good(E2,Y2,M2).
