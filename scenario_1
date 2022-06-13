@@ -108,8 +108,8 @@ cons(A, B) :- cons(A, T, B), time(T).
 %believes(X, cons(A, B)) :- cons(A, B), agent(X), event(A), event(B).
 
 holds(intention(X,B), T) :- holds(intention(X, A), T), believes(X, cons(A, B)).
-
 holds(badintention(X, A), T) :- holds(intention(X, A), T), bad(A,Y,M), time(T). 
+holds(goodintention(X, A), T) :- holds(intention(X, A), T), good(A,Y,M), time(T). 
 
 effect(kill(X), involves(X)) :- event(kill(X)).
 effect(dies(X), involves(X)) :- event(dies(X)).
@@ -191,8 +191,9 @@ effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
 
 % INTENTIONS
 
-% The agent has the intention to shoot at time 1. 
+% The agent has the intention to load at time 1. 
 holds(intention(shooter, load(gun)), 1).
+
 
 % The agent has beliefs about the following consequences
 believes(shooter, cons(load(gun), shoot(enemy))). 
@@ -202,5 +203,3 @@ believes(shooter, cons(kill(enemy), dies(enemy))).
 performs(shooter, load(gun), 2).
 performs(shooter, shoot(enemy), 4).
 performs(shooter, kill(enemy), 5). 
-
-
