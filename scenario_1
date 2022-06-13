@@ -120,6 +120,7 @@ effect(shoot(X), involves(X)) :- event(shoot(X)).
 time(0..10).
 
 % if A has occured, (bad)intention of A is terminated
+
 terminates(A, intention(X,A), T) :- holds(intention(X,A), T), occurs(A, T), time(T).
 terminates(A, badintention(X,A), T) :- terminates(A, intention(X,A), T).
 
@@ -190,6 +191,8 @@ effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
 
 
 % INTENTIONS
+%terminates(A, badintention(X, A), T) :- holds(intention(X, A), T), performs(X, A, T).
+
 
 % The agent has the intention to load at time 1. 
 holds(intention(shooter, load(gun)), 1).
