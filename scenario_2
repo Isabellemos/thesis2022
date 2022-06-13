@@ -43,8 +43,7 @@ m_Weight(M,1) :- modality(M).
 t_Weight(E,1) :- effect(E,involves(X)).
 %value(helpfulness).
 right(life).
-
-%right(save_own_life). 
+right(save_own_life). 
 
 % Modality weights 
 %m_Weight(life,1) :- modality(life).
@@ -61,7 +60,7 @@ right(life).
 effect(kill(X), neg(life)) :- event(kill(X)).
 effect(dies(X), neg(life)) :- event(dies(X)).
 
-effect(shoot(X), neg(life)) :- event(shoot(X)).
+%effect(shoot(X), neg(life)) :- event(shoot(X)).
 
 
 % VALUES
@@ -92,7 +91,7 @@ weightAct(A,N):- event(A), N=#sum{N1 : weightCons(A,T,E,N1)}.
 imp(benefitsCosts,A):- weightAct(A,N), N<0.
 per(benefitsCosts,A):- event(A), not imp(benefitsCosts,A).
 
-%%% DEONTOLOGY 
+%% DEONTOLOGY 
 
 %%% DDE (doctrine of double effect)
 imp(dde1,A) :- event(A), bad(A,Y,M).
@@ -164,6 +163,7 @@ initially(neg(dying(enemy))).
 % LOAD
 initiates(load(gun), loaded(gun), T) :- performs(shooter, load(gun), T), holds(neg(loaded(gun)), T), time(T).
 terminates(load(gun), intention(shooter, load(gun)), T) :- holds(intention(shooter, load(gun)), T), performs(shooter, load(gun), T).
+initiates(load(gun), intention(shooter, neg(load(gun))), T) :- holds(intention(shooter, load(gun)), T), performs(shooter, load(gun), T).
 
 precond(neg(loaded(gun)), load(gun)).
 effect(load(gun), loaded(gun)).
@@ -194,9 +194,10 @@ occurs(dies(enemy), T) :- holds(dying(enemy), T), time(T).
 
 terminates(dies(enemy), intention(shooter, dies(enemy)), T) :- holds(intention(shooter, dies(enemy)), T), occurs(dies(enemy), T), time(T).
 terminates(dies(enemy), intention(shooter, defend_self(shooter)), T) :- holds(intention(shooter, defend_self(shooter)), T), occurs(dies(enemy), T), time(T).
+terminates(dies(enemy), intention(shooter, save_own_life(shooter)), T) :- holds(intention(shooter, save_own_life(shooter)), T), occurs(dies(enemy), T), time(T).
+
 
 terminates(dies(enemy), alive(enemy), T), initiates(dies(enemy), neg(alive(enemy)), T) :- holds(alive(enemy), T), occurs(dies(enemy), T), time(T).
-
 
 precond(dying(enemy), dies(enemy)).
 precond(dying(enemy), neg(alive(enemy))). 
@@ -204,8 +205,10 @@ effect(dies(enemy), neg(alive(enemy))).
 effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
 
 % SAVE OWN LIFE 
+
 occurs(save_own_life(shooter)) :- holds(dying(enemy), T), time(T).
 precond(neg(alive(enemy)), save_own_life(shooter)).
+
 
 
 % INTENTIONS
@@ -213,12 +216,11 @@ precond(neg(alive(enemy)), save_own_life(shooter)).
 % The agent has the intention to defend himself at time 1. 
 
 holds(intention(shooter, defend_self(shooter)), 1).
-holds(intention(shooter, load(gun)), 2).
+
 
 % The agent has the following beliefs / expectations:
 believes(shooter, cons(load(gun), defend_self(shooter))).
-believes(shooter, cons(load(gun), save_own_life(shooter))). 
-believes(shooter, cons(defend_self(shooter), save_own_life(shooter))).
+believes(shooter, cons(defend_self(shooter), save_own_life(shooter))). 
 
 performs(shooter, load(gun), 2).
 performs(shooter, shoot(enemy), 4).
