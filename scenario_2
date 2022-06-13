@@ -98,7 +98,7 @@ imp(dde1,A) :- event(A), bad(A,Y,M).
 imp(dde2,A) :- event(A), holds(badintention(X, A), T). 
 imp(dde3,A) :- event(A), cons(A,T,E1), cons(E1,T2,E2), bad(E1,Y1,M1), good(E2,Y2,M2).
 imp(dde4,A):- imp(benefitsCosts,A).
-per(dde,A):-  event(A), not imp(dde1,A), not imp(dde2,A), not imp(dde3,A). 
+per(dde,A):-  event(A), not imp(dde1,A), not imp(dde2,A), not imp(dde3,A), not imp(dde4,A). 
 
 
 %%% *** My addition to framework 
@@ -125,12 +125,6 @@ effect(save_own_life(X), involves(X)) :- event(save_own_life(X)).
 
 %%% *** SCENARIO
 time(0..10).
-
-% if A has occured, (bad)intention of A is terminated
-
-terminates(A, intention(X,A), T) :- holds(intention(X,A), T), occurs(A, T), time(T).
-terminates(A, badintention(X,A), T) :- terminates(A, intention(X,A), T).
-terminates(A, goodintention(X,A), T) :- terminates(A, intention(X,A), T).
 
 action(load(gun)). 
 action(shoot(enemy)).
@@ -216,12 +210,17 @@ effect(save_own_life(shooter), neg(intention(shooter, save_own_life(shooter)))).
 
 % INTENTIONS
 
-% The agent has the intention to defend himself at time 1. 
+%% The agent has the intention to defend himself at time 1. 
 holds(intention(shooter, defend_self(shooter)), 1).
 
-% The agent has the following beliefs / expectations:
+%% The agent has the following beliefs / expectations:
 believes(shooter, cons(load(gun), defend_self(shooter))).
 believes(shooter, cons(defend_self(shooter), save_own_life(shooter))). 
+
+%% If A has occured, (bad)intention of A is terminated
+terminates(A, intention(X,A), T) :- holds(intention(X,A), T), occurs(A, T), time(T).
+terminates(A, badintention(X,A), T) :- terminates(A, intention(X,A), T).
+terminates(A, goodintention(X,A), T) :- terminates(A, intention(X,A), T).
 
 
 performs(shooter, load(gun), 2).
