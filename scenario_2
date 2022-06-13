@@ -127,15 +127,17 @@ effect(save_own_life(X), involves(X)) :- event(save_own_life(X)).
 time(0..10).
 
 % if A has occured, (bad)intention of A is terminated
+
 terminates(A, intention(X,A), T) :- holds(intention(X,A), T), occurs(A, T), time(T).
 terminates(A, badintention(X,A), T) :- terminates(A, intention(X,A), T).
+terminates(A, goodintention(X,A), T) :- terminates(A, intention(X,A), T).
 
 action(load(gun)). 
 action(shoot(enemy)).
 action(kill(enemy)).
 event(dies(enemy)).
 event(defend_self(shooter)).
-auto(save_own_life(shooter)).
+event(save_own_life(shooter)).
 
 fluent(alive(enemy)).
 fluent(loaded(gun)).
@@ -165,6 +167,7 @@ initiates(load(gun), loaded(gun), T) :- performs(shooter, load(gun), T), holds(n
 terminates(load(gun), intention(shooter, load(gun)), T) :- holds(intention(shooter, load(gun)), T), performs(shooter, load(gun), T).
 initiates(load(gun), intention(shooter, neg(load(gun))), T) :- holds(intention(shooter, load(gun)), T), performs(shooter, load(gun), T).
 
+
 precond(neg(loaded(gun)), load(gun)).
 effect(load(gun), loaded(gun)).
 effect(load(gun), neg(intention(shooter, load(gun)))).
@@ -193,10 +196,6 @@ effect(kill(enemy), dying(enemy)).
 occurs(dies(enemy), T) :- holds(dying(enemy), T), time(T).
 
 terminates(dies(enemy), intention(shooter, dies(enemy)), T) :- holds(intention(shooter, dies(enemy)), T), occurs(dies(enemy), T), time(T).
-terminates(dies(enemy), intention(shooter, defend_self(shooter)), T) :- holds(intention(shooter, defend_self(shooter)), T), occurs(dies(enemy), T), time(T).
-terminates(dies(enemy), intention(shooter, save_own_life(shooter)), T) :- holds(intention(shooter, save_own_life(shooter)), T), occurs(dies(enemy), T), time(T).
-
-
 terminates(dies(enemy), alive(enemy), T), initiates(dies(enemy), neg(alive(enemy)), T) :- holds(alive(enemy), T), occurs(dies(enemy), T), time(T).
 
 precond(dying(enemy), dies(enemy)).
@@ -204,23 +203,26 @@ precond(dying(enemy), neg(alive(enemy))).
 effect(dies(enemy), neg(alive(enemy))).
 effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
 
+% DEFEND SELF
+occurs(defend_self(shooter), T) :- holds(loaded(gun), T), time(T).
+
 % SAVE OWN LIFE 
+occurs(save_own_life(shooter), T) :- holds(dying(enemy), T), time(T).
+terminates(save_own_life(shooter), intention(shooter, save_own_life(shooter)), T) :- holds(intention(shooter, save_own_life(shooter)), T), occurs(save_own_life(shooter), T), time(T).
 
-occurs(save_own_life(shooter)) :- holds(dying(enemy), T), time(T).
 precond(neg(alive(enemy)), save_own_life(shooter)).
-
+effect(save_own_life(shooter), neg(intention(shooter, save_own_life(shooter)))).
 
 
 % INTENTIONS
 
 % The agent has the intention to defend himself at time 1. 
-
 holds(intention(shooter, defend_self(shooter)), 1).
-
 
 % The agent has the following beliefs / expectations:
 believes(shooter, cons(load(gun), defend_self(shooter))).
 believes(shooter, cons(defend_self(shooter), save_own_life(shooter))). 
+
 
 performs(shooter, load(gun), 2).
 performs(shooter, shoot(enemy), 4).
