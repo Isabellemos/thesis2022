@@ -112,7 +112,7 @@ effect(dies(X), involves(X)) :- event(dies(X)).
 effect(shoot(X), involves(X)) :- event(shoot(X)).
 
 
-%%% -------- Context
+%%% ------------ CONTEXT -------------------------------- %%%
 
 % ------------ Fluent declaration-------------------------------- %
 
@@ -176,7 +176,8 @@ effect(dies(enemy), neg(dying(enemy))) :- auto(dies(enemy)).
 effect(dies(enemy), neg(intention(shooter, dies(enemy)))) :- auto(dies(enemy)).
 
 
-% -------- Scenario 1
+% ------------ SCENARIO -------------------------------- %
+
 time(0..10).
 performs(shooter, load(gun), 1).
 performs(shooter, shoot(enemy), 2).
