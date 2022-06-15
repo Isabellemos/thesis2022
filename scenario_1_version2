@@ -100,14 +100,17 @@ per(dde,A):-  event(A), not imp(dde1,A), not imp(dde2,A), not imp(dde3,A), not i
 
 neg(neg(F)) :- fluent(F), holds(F). 
 
-
 % *** INTENTIONALITY 
+believes(X, cons(A, B)) :- cons(A, T, B), time(T), agent(X).
 
-cons(A, B) :- cons(A, T, B), time(T).
-
-holds(intention(X,B), T) :- holds(intention(X, A), T), believes(X, cons(A, B)).
+holds(intention(X,B), T) :- holds(intention(X, A), T), holds(believes(X, cons(A, B)), T).
 holds(badintention(X, A), T) :- holds(intention(X, A), T), bad(A,Y,M), time(T). 
 holds(goodintention(X, A), T) :- holds(intention(X, A), T), good(A,Y,M), time(T). 
+
+% the good and bad intention terminate when the intention terminates.
+terminates(A, badintention(X,A), T) :- terminates(A, intention(X,A), T).
+terminates(A, goodintention(X, A), T) :- terminates(A, intention(X,A), T).
+
 
 effect(kill(X), involves(X)) :- event(kill(X)).
 effect(dies(X), involves(X)) :- event(dies(X)).
@@ -119,7 +122,7 @@ time(0..10).
 
 action(load(gun)). 
 action(shoot(enemy)).
-action(kill(enemy)).
+event(kill(enemy)).
 event(dies(enemy)).
 
 fluent(alive(enemy)).
@@ -143,41 +146,41 @@ initially(neg(flying(bullet))).
 initially(neg(dying(enemy))).
 
 % LOAD
-precond(alive(enemy), load(gun) :- action(load(gun)).
+precond(alive(enemy), load(gun)) :- action(load(gun)).
 precond(neg(loaded(gun)), load(gun)) :- action(load(gun)).
 effect(load(gun), loaded(gun)) :- action(load(gun)).
 effect(load(gun), neg(intention(shooter, load(gun)))) :- action(load(gun)). 
 
 
 % SHOOT
-precond(alive(enemy), shoot(enemy)).
-precond(loaded(gun), shoot(enemy)).
-effect(shoot(enemy), neg(loaded(gun))). 
-effect(shoot(enemy), flying(bullet)).
+precond(alive(enemy), shoot(enemy)) :- action(shoot(enemy)).
+precond(loaded(gun), shoot(enemy)) :- action(shoot(enemy)).
+effect(shoot(enemy), neg(loaded(gun))) :- action(shoot(enemy)).
+effect(shoot(enemy), flying(bullet)) :- action(shoot(enemy)).
+effect(shoot(enemy), neg(intention(shooter, shoot(enemy)))) :- action(shoot(enemy)).
 
 
 % KILL (auto event)
-precond(flying(bullet), kill(enemy)).
-effect(kill(enemy), neg(flying(bullet))).
-effect(kill(enemy), dying(enemy)).
+%auto(kill(enemy)) :- agent(shooter).
+precond(flying(bullet), kill(enemy)) :- auto(kill(enemy)).
+effect(kill(enemy), neg(flying(bullet))) :- auto(kill(enemy)).
+effect(kill(enemy), dying(enemy)) :- auto(kill(enemy)).
+effect(kill(enemy), neg(intention(shooter, kill(enemy)))). :- auto(kill(enemy)).
+
 
 % DIES (auto event)
-precond(dying(enemy), dies(enemy)).
-precond(dying(enemy), neg(alive(enemy))). 
-effect(dies(enemy), neg(alive(enemy))).
-effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
+precond(dying(enemy), dies(enemy)) :- auto(dies(enemy)).
+precond(dying(enemy), neg(alive(enemy))) :- auto(dies(enemy)).
+effect(dies(enemy), neg(alive(enemy))) :- auto(dies(enemy)).
+effect(dies(enemy), neg(intention(shooter, dies(enemy)))). :- auto(dies(enemy)).
 
 
 % INTENTIONS
 
-%% if A has occured, (bad)intention of A is terminated
-terminates(A, intention(X,A), T) :- holds(intention(X,A), T), occurs(A, T), time(T).
-terminates(A, badintention(X,A), T) :- terminates(A, intention(X,A), T).
-terminates(A, goodintention(X, A), T) :- terminates(A, intention(X,A), T).
-
-
 %% The agent has the intention to load at time 1. 
 holds(intention(shooter, load(gun)), 1).
+holds(intention(shooter, shoot(enemy)), 1).
+holds(intention(shooter, kill(enemy)), 1).
 
 
 %% The agent has beliefs about the following consequences
@@ -185,5 +188,6 @@ believes(shooter, cons(load(gun), shoot(enemy))).
 believes(shooter, cons(shoot(enemy), kill(enemy))). 
 believes(shooter, cons(kill(enemy), dies(enemy))). 
 
+
 performs(shooter, load(gun), 2).
-performs(shooter, shoot(enemy), 4).
+performs(shooter, shoot(enemy), 3).
