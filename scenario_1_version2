@@ -184,8 +184,6 @@ performs(shooter, shoot(enemy), 2).
 
 %% The agent has the intention to load at time 1. 
 holds(intention(shooter, load(gun)), 1).
-holds(intention(shooter, shoot(enemy)), 1).
-holds(intention(shooter, kill(enemy)), 1).
 
 %% The agent has beliefs about the following consequences
 holds(believes(shooter, cons(load(gun), shoot(enemy))), 1). 
