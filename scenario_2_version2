@@ -201,6 +201,5 @@ performs(shooter, shoot(enemy), 2).
 holds(intention(shooter, defend_self(shooter)), 1).
 
 %% The agent has beliefs about the following consequences
-holds(believes(shooter, cons(defend_self(shooter), load(gun)), 1)).
-holds(believes(shooter, cons(defend_self(shooter), save_own_life(shooter)), 1)). 
-
+holds(believes(shooter, cons(defend_self(shooter), load(gun))), 1).
+holds(believes(shooter, cons(defend_self(shooter), save_own_life(shooter))), 1). 
