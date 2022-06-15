@@ -99,6 +99,7 @@ neg(neg(F)) :- fluent(F), holds(F).
 believes(X, cons(A, B)) :- cons(A, T, B), time(T), agent(X).
 
 holds(intention(X,B), T) :- holds(intention(X, A), T), holds(believes(X, cons(A, B)), T).
+
 holds(badintention(X, A), T) :- holds(intention(X, A), T), bad(A,Y,M), time(T). 
 holds(goodintention(X, A), T) :- holds(intention(X, A), T), good(A,Y,M), time(T). 
 
@@ -175,20 +176,17 @@ effect(dies(enemy), neg(alive(enemy))) :- auto(dies(enemy)).
 effect(dies(enemy), neg(intention(shooter, dies(enemy)))) :- auto(dies(enemy)).
 
 
-
 % -------- Scenario 1
-
 time(0..10).
-performs(shooter, load(gun), 2).
-performs(shooter, shoot(enemy), 3).
+performs(shooter, load(gun), 1).
+performs(shooter, shoot(enemy), 2).
 
 %% The agent has the intention to load at time 1. 
 holds(intention(shooter, load(gun)), 1).
 holds(intention(shooter, shoot(enemy)), 1).
 holds(intention(shooter, kill(enemy)), 1).
 
-
 %% The agent has beliefs about the following consequences
-believes(shooter, cons(load(gun), shoot(enemy))). 
-believes(shooter, cons(shoot(enemy), kill(enemy))). 
-believes(shooter, cons(kill(enemy), dies(enemy))). 
+holds(believes(shooter, cons(load(gun), shoot(enemy))), 1). 
+holds(believes(shooter, cons(shoot(enemy), kill(enemy))), 1). 
+holds(believes(shooter, cons(kill(enemy), dies(enemy))), 1). 
