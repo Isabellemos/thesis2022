@@ -1,6 +1,4 @@
-% *** Original Framework 
-% (small changes on the clipped predicate, the Doctrine of Double effect rules, and only the relevant ethical constraints included)
-
+%% EVENT MOTOR %%
 
 % ACTION
 event(A):- action(A).
@@ -9,15 +7,14 @@ event(A) :- act(A).
 
 
 % FLUENTS
+neg(neg(F)) :- fluent(F), holds(F). 
 initiates(E,F,T):- effect(E,F), occurs(E,T).
 terminates(E,F,T):- effect(E,neg(F)), occurs(E,T).
 holds(F,0):- initially(F).
-clipped(F,T):- terminates(E,F,T).
-clipped(neg(F), T) :- holds(F, T+1), time(T), fluent(F). 
-
-
 holds(F,T):- initiates(E,F,T-1), time(T).
 holds(F,T):- holds(F,T-1), not clipped(F,T-1), not nonInertial(F), time(T).
+clipped(F,T):- terminates(E,F,T).
+clipped(neg(F), T) :- holds(F, T+1), time(T), fluent(F). 
 
 % EVENTS
 incomplete(E,T):- precond(F,E), not holds(F,T), time(T). 
@@ -26,13 +23,17 @@ occurs(U,T):- possible(U,T), auto(U).
 occurs(A,T):- possible(A,T), performs(D,A,T), action(A).
 
 
+
+%% CAUSAL MOTOR %%
+
 % CONSEQUENCES
 cons(E,T,F):- occurs(E,T), effect(E,F), holds(F,T+1).
 cons(F,T,E):-  occurs(E,T), precond(F,E), holds(F,T).
 cons(E1,T1,E3):- cons(E1,T1,C2), cons(C2,T2,E3), event(E1), event(E3), T2>T1.
 
 
-% MODALITIES
+%% MODALITY SPECIFICATION %%
+
 %modality(I;V) :- right(I), value(V).
 modality(I) :- right(I).
 m_Weight(M,1) :- modality(M).
@@ -41,27 +42,31 @@ t_Weight(E,1) :- effect(E,involves(X)).
 right(life).
 
 
-% ETHICAL EVENT SPECIFICATION
+%% ETHICAL EVENT SPECIFICATION %%
+
 % VALUES
 %effect(cure(X,G), displays(helpfulness)):- auto(cure(X,G)).
 %effect(kill(X,G), neg(displays(helpfulness))):- auto(kill(X,G)).
-
 
 % RIGHTS:
 effect(kill(X), neg(life)) :- event(kill(X)).
 effect(dies(X), neg(life)) :- event(dies(X)).
 effect(shoot(X), neg(life)) :- event(shoot(X)).
 
+% BELIEVES
+believes(X, cons(A, B)) :- cons(A, T, B), time(T), agent(X).
+
+
+
+%% THEORY OF THE GOOD %%
 
 % VALUES
 %good(E,X,M):- effect(E,involves(X)), effect(E,displays(M)), value(M).
 %bad(E,X,M):- effect(E,involves(X)), effect(E,neg(displays(M))), value(M).
 
-
 % RIGHTS
 bad(E,X,M):- effect(E,involves(X)), effect(E,neg(M)), right(M).
 good(E,X,M):- effect(E,involves(X)), not effect(E,neg(M)), right(M).
-
 
 % WEIGHT
 weightedGood(E,N1*N2,M) :- good(E,X,M), m_Weight(M,N1), t_Weight(E,N2).
@@ -71,7 +76,18 @@ weight(E,1) :- bad(E,X,M).
 final_weight(E,N1-N3) :- event(E), N1=#sum{N2 : weightedGood(E,N2,M1)}, N3=#sum{N4 : weightedBad(E,N4,M2)}.
 
 
-% THEORIES OF THE RIGHT
+
+%% THEORIES OF THE RIGHT %%
+
+%% INTENTIONS
+holds(intention(X,B), T) :- holds(intention(X, A), T), holds(believes(X, cons(A, B)), T).
+holds(badintention(X, A), T) :- holds(intention(X, A), T), bad(A,Y,M), time(T). 
+holds(goodintention(X, A), T) :- holds(intention(X, A), T), good(A,Y,M), time(T). 
+
+%%% the good or bad intention terminates when the intention terminates.
+terminates(A, badintention(X,A), T) :- terminates(A, intention(X,A), T).
+terminates(A, goodintention(X, A), T) :- terminates(A, intention(X,A), T).
+
 
 %% CONSEQUENTIALISM
 
@@ -91,35 +107,14 @@ imp(dde4,A) :- imp(benefitsCosts,A).
 per(dde,A) :-  event(A), not imp(dde1,A), not imp(dde2,A), not imp(dde3,A), not imp(dde4,A). 
 
 
-%%% *** My addition to framework 
-
-neg(neg(F)) :- fluent(F), holds(F). 
-
-% *** INTENTIONALITY 
-believes(X, cons(A, B)) :- cons(A, T, B), time(T), agent(X).
-
-holds(intention(X,B), T) :- holds(intention(X, A), T), holds(believes(X, cons(A, B)), T).
-
-holds(badintention(X, A), T) :- holds(intention(X, A), T), bad(A,Y,M), time(T). 
-holds(goodintention(X, A), T) :- holds(intention(X, A), T), good(A,Y,M), time(T). 
-
-% the good or bad intention terminates when the intention terminates.
-terminates(A, badintention(X,A), T) :- terminates(A, intention(X,A), T).
-terminates(A, goodintention(X, A), T) :- terminates(A, intention(X,A), T).
-
-
 effect(kill(X), involves(X)) :- event(kill(X)).
 effect(dies(X), involves(X)) :- event(dies(X)).
 effect(shoot(X), involves(X)) :- event(shoot(X)).
 
 
-%%% --------
+%%% -------- Context
 
 % ------------ Fluent declaration-------------------------------- %
-action(load(gun)). 
-action(shoot(enemy)).
-auto(kill(enemy)).
-auto(dies(enemy)).
 
 fluent(alive(enemy)).
 fluent(loaded(gun)).
@@ -131,12 +126,11 @@ fluent(intention(shooter, shoot(enemy))).
 fluent(intention(shooter, kill(enemy))).
 fluent(intention(shooter, dies(enemy))).
 
-nonInertial(dying(enemy)). 
-
-agent(shooter).
-agent(enemy).
+%nonInertial(dying(enemy)). 
 
 % ------------ INITIAL SITUATION -------------------------------- %
+agent(shooter).
+agent(enemy).
 
 initially(alive(enemy)).
 initially(neg(loaded(gun))).
@@ -144,6 +138,11 @@ initially(neg(flying(bullet))).
 initially(neg(dying(enemy))).
 
 % ------------ EVENT SPECIFICATION ------------------------------ %
+
+action(load(gun)). 
+action(shoot(enemy)).
+auto(kill(enemy)).
+auto(dies(enemy)).
 
 % LOAD
 precond(alive(enemy), load(gun)) :- action(load(gun)).
@@ -158,7 +157,7 @@ precond(loaded(gun), shoot(enemy)) :- action(shoot(enemy)).
 effect(shoot(enemy), neg(loaded(gun))) :- action(shoot(enemy)).
 effect(shoot(enemy), flying(bullet)) :- action(shoot(enemy)).
 effect(shoot(enemy), neg(intention(shooter, shoot(enemy)))) :- action(shoot(enemy)).
-
+effect(shoot(enemy), neg(loaded(gun))) :- action(shoot(enemy)).
 
 % KILL (auto event)
 auto(kill(enemy)) :- involves(enemy).
@@ -173,6 +172,7 @@ effect(kill(enemy), neg(intention(shooter, kill(enemy)))) :- auto(kill(enemy)).
 precond(dying(enemy), dies(enemy)) :- auto(dies(enemy)).
 precond(dying(enemy), neg(alive(enemy))) :- auto(dies(enemy)).
 effect(dies(enemy), neg(alive(enemy))) :- auto(dies(enemy)).
+effect(dies(enemy), neg(dying(enemy))) :- auto(dies(enemy)).
 effect(dies(enemy), neg(intention(shooter, dies(enemy)))) :- auto(dies(enemy)).
 
 
