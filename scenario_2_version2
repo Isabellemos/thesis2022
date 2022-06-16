@@ -1,5 +1,3 @@
-
-
 %% EVENT MOTOR %%
 
 % ACTION
@@ -198,7 +196,7 @@ effect(dies(enemy), neg(intention(shooter, dies(enemy)))) :- auto(dies(enemy)).
 effect(dies(enemy), neg(intention(shooter, defend_self(shooter)))) :- auto(dies(enemy)).
 
 % SAVE OWN LIFE 
-precond(neg(alive(enemy)), save_own_life(shooter)) :- auto(save_own_life(shooter)).
+precond(dying(enemy), save_own_life(shooter)) :- auto(save_own_life(shooter)).
 effect(save_own_life(shooter), neg(intention(shooter, save_own_life(shooter)))) :- auto(save_own_life(shooter)).
 
 
@@ -208,4 +206,3 @@ time(0..10).
 performs(shooter, see_armed_enemy(shooter), 1).
 performs(shooter, load(gun), 2).
 performs(shooter, shoot(enemy), 3).
-
