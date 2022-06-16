@@ -121,10 +121,10 @@ fluent(loaded(gun)).
 fluent(flying(bullet)).
 fluent(dying(enemy)).
 
-fluent(intention(shooter, load(gun))).
-fluent(intention(shooter, shoot(enemy))).
-fluent(intention(shooter, kill(enemy))).
-fluent(intention(shooter, dies(enemy))).
+%fluent(intention(shooter, load(gun))).
+%fluent(intention(shooter, shoot(enemy))).
+%fluent(intention(shooter, kill(enemy))).
+%fluent(intention(shooter, dies(enemy))).
 
 %nonInertial(dying(enemy)). 
 
@@ -137,12 +137,31 @@ initially(neg(loaded(gun))).
 initially(neg(flying(bullet))).
 initially(neg(dying(enemy))).
 
-% ------------ EVENT SPECIFICATION ------------------------------ %
+%initially(intention(shooter, load(gun))).
 
+
+% ------------ EVENT SPECIFICATION ------------------------------ %
+action(see_armed_enemy(shooter)).
+action(see_enemy(shooter)).
 action(load(gun)). 
 action(shoot(enemy)).
 auto(kill(enemy)).
 auto(dies(enemy)).
+
+% SHOOTER SEES (ARMED) ENEMY 
+%precond(alive(enemy), see_armed_enemy(shooter)) :- action(see_armed_enemy(shooter)).
+%effect(see_armed_enemy(shooter), intention(shooter, load(gun))) :- action(see_armed_enemy(shooter)).
+%effect(see_armed_enemy(shooter), believes(shooter, cons(load(gun), shoot(enemy)))).
+%effect(see_armed_enemy(shooter), believes(shooter, cons(load(gun), shoot(enemy)))).
+%effect(see_armed_enemy(shooter), believes(shooter, cons(load(gun), shoot(enemy)))).
+
+% SHOOTER SEES (UNARMED OR ARMED) ENEMY 
+precond(alive(enemy), see_enemy(shooter)) :- action(see_enemy(shooter)).
+effect(see_enemy(shooter), intention(shooter, load(gun))) :- action(see_enemy(shooter)).
+effect(see_enemy(shooter), believes(shooter, cons(load(gun), shoot(enemy)))).
+effect(see_enemy(shooter), believes(shooter, cons(shoot(enemy), kill(enemy)))).
+effect(see_enemy(shooter), believes(shooter, cons(kill(enemy), dies(enemy)))).
+effect(see_enemy(shooter), intention(shooter, load(gun))).
 
 % LOAD
 precond(alive(enemy), load(gun)) :- action(load(gun)).
@@ -179,13 +198,6 @@ effect(dies(enemy), neg(intention(shooter, dies(enemy)))) :- auto(dies(enemy)).
 % ------------ SCENARIO -------------------------------- %
 
 time(0..10).
-performs(shooter, load(gun), 1).
-performs(shooter, shoot(enemy), 2).
-
-%% The agent has the intention to load at time 1. 
-holds(intention(shooter, load(gun)), 1).
-
-%% The agent has beliefs about the following consequences
-holds(believes(shooter, cons(load(gun), shoot(enemy))), 1). 
-holds(believes(shooter, cons(shoot(enemy), kill(enemy))), 1). 
-holds(believes(shooter, cons(kill(enemy), dies(enemy))), 1). 
+performs(shooter, see_enemy(shooter), 1).
+performs(shooter, load(gun), 2).
+performs(shooter, shoot(enemy), 3).
