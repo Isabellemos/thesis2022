@@ -149,11 +149,13 @@ auto(kill(enemy)).
 auto(dies(enemy)).
 
 % SHOOTER SEES (ARMED) ENEMY 
-%precond(alive(enemy), see_armed_enemy(shooter)) :- action(see_armed_enemy(shooter)).
-%effect(see_armed_enemy(shooter), intention(shooter, load(gun))) :- action(see_armed_enemy(shooter)).
-%effect(see_armed_enemy(shooter), believes(shooter, cons(load(gun), shoot(enemy)))).
-%effect(see_armed_enemy(shooter), believes(shooter, cons(load(gun), shoot(enemy)))).
-%effect(see_armed_enemy(shooter), believes(shooter, cons(load(gun), shoot(enemy)))).
+precond(alive(enemy), see_armed_enemy(shooter)) :- action(see_armed_enemy(shooter)).
+
+effect(see_armed_enemy(shooter), believes(shooter, cons(defend_self(shooter), load(gun)))).
+effect(see_armed_enemy(shooter), believes(shooter, cons(defend_self(shooter), save_own_life(shooter)))).
+
+effect(see_armed_enemy(shooter), intention(shooter, defend_self(shooter))).
+
 
 % SHOOTER SEES (UNARMED OR ARMED) ENEMY 
 precond(alive(enemy), see_enemy(shooter)) :- action(see_enemy(shooter)).
