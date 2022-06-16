@@ -10,17 +10,12 @@ event(A) :- act(A).
 
 % FLUENTS
 initiates(E,F,T):- effect(E,F), occurs(E,T).
-%not negative(S,F): in sim S is er geen negatief effect op F. 
 terminates(E,F,T):- effect(E,neg(F)), occurs(E,T).
 holds(F,0):- initially(F).
 clipped(F,T):- terminates(E,F,T).
 clipped(neg(F), T) :- holds(F, T+1), time(T), fluent(F). 
-
-
 holds(F,T):- initiates(E,F,T-1), time(T).
 holds(F,T):- holds(F,T-1), not clipped(F,T-1), not nonInertial(F), time(T).
-%holds(F, T) :- initially(F), not clipped(0, F, T), fluent(F), action(A), time(T).
-%holds(F, T2) :- occurs(A, T1), initiates(A, F, T1), T1 < T2, not clipped(T1, F, T2), fluent(F), action(A), time(T1), time(T2).
 
 
 % EVENTS
@@ -108,7 +103,7 @@ neg(neg(F)) :- fluent(F), holds(F).
 
 % *** INTENTIONALITY 
 
-cons(A, B) :- cons(A, T, B), time(T).
+believes(A, B) :- cons(A, T, B), time(T).
 
 holds(intention(X, B), T) :- holds(intention(X, A), T), believes(X, cons(A, B)).
 holds(badintention(X, A), T) :- holds(intention(X, A), T), bad(A,Y,M), time(T). 
