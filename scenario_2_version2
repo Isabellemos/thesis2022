@@ -158,7 +158,6 @@ effect(load(gun), neg(intention(shooter, load(gun)))) :- action(load(gun)).
 
 % DEFEND SELF 
 precond(loaded(gun), defend_self(shooter)) :- auto(defend_self(shooter)).
-effect(defend_self(shooter), loaded(gun)) :- auto(defend_self(shooter)).
 
 % SHOOT
 precond(alive(enemy), shoot(enemy)) :- action(shoot(enemy)).
