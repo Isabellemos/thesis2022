@@ -1,3 +1,5 @@
+
+
 %% EVENT MOTOR %%
 
 % ACTION
@@ -143,12 +145,21 @@ initially(neg(dying(enemy))).
 
 % ------------ EVENT SPECIFICATION ------------------------------ %
 
+action(see_armed_enemy(shooter)).
 auto(defend_self(shooter)).
 action(load(gun)). 
 action(shoot(enemy)).
 auto(kill(enemy)).
 auto(dies(enemy)).
 auto(save_own_life(shooter)).
+
+% SHOOTER SEES (ARMED) ENEMY 
+precond(alive(enemy), see_armed_enemy(shooter)) :- action(see_armed_enemy(shooter)).
+
+effect(see_armed_enemy(shooter), believes(shooter, cons(defend_self(shooter), load(gun)))).
+effect(see_armed_enemy(shooter), believes(shooter, cons(defend_self(shooter), save_own_life(shooter)))).
+
+effect(see_armed_enemy(shooter), intention(shooter, defend_self(shooter))).
 
 
 % LOAD
@@ -194,12 +205,7 @@ effect(save_own_life(shooter), neg(intention(shooter, save_own_life(shooter)))) 
 % ------------ SCENARIO -------------------------------- %
 
 time(0..10).
-performs(shooter, load(gun), 1).
-performs(shooter, shoot(enemy), 2).
+performs(shooter, see_armed_enemy(shooter), 1).
+performs(shooter, load(gun), 2).
+performs(shooter, shoot(enemy), 3).
 
-%% The agent has the intention to load at time 1. 
-holds(intention(shooter, defend_self(shooter)), 1).
-
-%% The agent has beliefs about the following consequences
-holds(believes(shooter, cons(defend_self(shooter), load(gun))), 1).
-holds(believes(shooter, cons(defend_self(shooter), save_own_life(shooter))), 1). 
