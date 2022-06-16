@@ -54,8 +54,7 @@ right(save_own_life).
 % RIGHTS:
 effect(kill(X), neg(life)) :- event(kill(X)).
 effect(dies(X), neg(life)) :- event(dies(X)).
-
-%effect(shoot(X), neg(life)) :- event(shoot(X)).
+effect(shoot(X), neg(life)) :- event(shoot(X)).
 
 
 % VALUES
