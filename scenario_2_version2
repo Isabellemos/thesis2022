@@ -83,6 +83,7 @@ holds(badintention(X, A), T) :- holds(intention(X, A), T), bad(A,Y,M), time(T).
 holds(goodintention(X, A), T) :- holds(intention(X, A), T), good(A,Y,M), time(T). 
 
 %%% the good or bad intention terminates when the intention terminates.
+holds(intention(X,B), T) :- holds(intention(X, A), T), holds(believes(X, cons(A, B)), T).
 terminates(A, badintention(X,A), T) :- terminates(A, intention(X,A), T).
 terminates(A, goodintention(X,A), T) :- terminates(A, intention(X,A), T).
 
@@ -120,17 +121,6 @@ fluent(alive(enemy)).
 fluent(loaded(gun)).
 fluent(flying(bullet)).
 fluent(dying(enemy)).
-
-fluent(intention(shooter, defend_self(shooter))).
-fluent(intention(shooter, save_own_life(shooter))).
-fluent(intention(shooter, load(gun))).
-fluent(intention(shooter, shoot(enemy))).
-fluent(intention(shooter, kill(enemy))).
-fluent(intention(shooter, dies(enemy))).
-fluent(intention(shooter, dies(enemy))).
-
-
-%nonInertial(dying(enemy)). 
 
 % ------------ INITIAL SITUATION -------------------------------- %
 agent(shooter).
