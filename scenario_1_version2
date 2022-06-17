@@ -172,6 +172,8 @@ precond(neg(loaded(gun)), load(gun)).
 effect(load(gun), loaded(gun)).
 effect(load(gun), neg(intention(shooter, load(gun)))). 
 
+% DEFEND SELF 
+precond(loaded(gun), defend_self(shooter)).
 
 % SHOOT
 precond(alive(enemy), shoot(enemy)).
@@ -196,6 +198,10 @@ precond(dying(enemy), neg(alive(enemy))).
 effect(dies(enemy), neg(alive(enemy))).
 effect(dies(enemy), neg(dying(enemy))).
 effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
+
+% SAVE OWN LIFE 
+precond(dying(enemy), save_own_life(shooter)).
+effect(save_own_life(shooter), neg(intention(shooter, save_own_life(shooter)))).
 
 
 % ------------ SCENARIO -------------------------------- %
