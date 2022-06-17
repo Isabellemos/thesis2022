@@ -111,6 +111,8 @@ per(dde,A) :-  event(A), not imp(dde1,A), not imp(dde2,A), not imp(dde3,A), not 
 effect(kill(X), involves(X)) :- event(kill(X)).
 effect(dies(X), involves(X)) :- event(dies(X)).
 effect(shoot(X), involves(X)) :- event(shoot(X)).
+effect(defend_self(X), involves(X)) :- event(defend_self(X)).
+effect(save_own_life(X), involves(X)) :- event(save_own_life(X)).
 
 
 %%% ------------ CONTEXT -------------------------------- %%%
