@@ -4,15 +4,10 @@
 modality(I) :- right(I).
 m_Weight(M,1) :- modality(M).
 t_Weight(E,1) :- effect(E,involves(X)).
-%value(helpfulness).
 right(life).
 
 
 %% ETHICAL EVENT SPECIFICATION %%
-
-% VALUES
-%effect(cure(X,G), displays(helpfulness)):- auto(cure(X,G)).
-%effect(kill(X,G), neg(displays(helpfulness))):- auto(kill(X,G)).
 
 % RIGHTS:
 effect(kill(X), neg(life)) :- event(kill(X)).
@@ -21,8 +16,6 @@ effect(shoot(X), neg(life)) :- event(shoot(X)).
 
 % BELIEVES
 believes(X, cons(A, B)) :- cons(A, T, B), time(T), agent(X).
-
-
 
 %% THEORY OF THE GOOD %%
 
@@ -74,3 +67,6 @@ per(dde,A) :-  event(A), not imp(dde1,A), not imp(dde2,A), not imp(dde3,A), not 
 effect(kill(X), involves(X)) :- event(kill(X)).
 effect(dies(X), involves(X)) :- event(dies(X)).
 effect(shoot(X), involves(X)) :- event(shoot(X)).
+effect(defend_self(X), involves(X)) :- event(defend_self(X)).
+effect(save_own_life(X), involves(X)) :- event(save_own_life(X)).
+
