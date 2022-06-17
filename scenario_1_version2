@@ -40,7 +40,7 @@ m_Weight(M,1) :- modality(M).
 t_Weight(E,1) :- effect(E,involves(X)).
 %value(helpfulness).
 right(life).
-right(save_own_life).
+%right(save_own_life).
 
 
 %% ETHICAL EVENT SPECIFICATION %%
