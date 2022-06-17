@@ -164,37 +164,35 @@ effect(see_enemy(shooter), believes(shooter, cons(kill(enemy), dies(enemy)))).
 effect(see_enemy(shooter), intention(shooter, load(gun))).
 
 % LOAD
-precond(alive(enemy), load(gun)) :- action(load(gun)).
-precond(neg(loaded(gun)), load(gun)) :- action(load(gun)).
-effect(load(gun), loaded(gun)) :- action(load(gun)).
-effect(load(gun), neg(intention(shooter, load(gun)))) :- action(load(gun)). 
+precond(alive(enemy), load(gun)).
+precond(neg(loaded(gun)), load(gun)).
+effect(load(gun), loaded(gun)).
+effect(load(gun), neg(intention(shooter, load(gun)))). 
 
-% DEFEND SELF 
-precond(loaded(gun), defend_self(shooter)) :- auto(defend_self(shooter)).
 
 % SHOOT
-precond(alive(enemy), shoot(enemy)) :- action(shoot(enemy)).
-precond(loaded(gun), shoot(enemy)) :- action(shoot(enemy)).
-effect(shoot(enemy), neg(loaded(gun))) :- action(shoot(enemy)).
-effect(shoot(enemy), flying(bullet)) :- action(shoot(enemy)).
-effect(shoot(enemy), neg(intention(shooter, shoot(enemy)))) :- action(shoot(enemy)).
-effect(shoot(enemy), neg(loaded(gun))) :- action(shoot(enemy)).
+precond(alive(enemy), shoot(enemy)).
+precond(loaded(gun), shoot(enemy)).
+effect(shoot(enemy), neg(loaded(gun))).
+effect(shoot(enemy), flying(bullet)).
+effect(shoot(enemy), neg(intention(shooter, shoot(enemy)))).
+effect(shoot(enemy), neg(loaded(gun))).
 
 % KILL (auto event)
 auto(kill(enemy)) :- involves(enemy).
-precond(alive(enemy), kill(enemy)) :- auto(kill(enemy)).
-precond(flying(bullet), kill(enemy)) :- auto(kill(enemy)).
-effect(kill(enemy), neg(flying(bullet))) :- auto(kill(enemy)).
-effect(kill(enemy), dying(enemy)) :- auto(kill(enemy)).
-effect(kill(enemy), neg(intention(shooter, kill(enemy)))) :- auto(kill(enemy)).
+precond(alive(enemy), kill(enemy)).
+precond(flying(bullet), kill(enemy)).
+effect(kill(enemy), neg(flying(bullet))).
+effect(kill(enemy), dying(enemy)).
+effect(kill(enemy), neg(intention(shooter, kill(enemy)))).
 
 
 % DIES (auto event)
-precond(dying(enemy), dies(enemy)) :- auto(dies(enemy)).
-precond(dying(enemy), neg(alive(enemy))) :- auto(dies(enemy)).
-effect(dies(enemy), neg(alive(enemy))) :- auto(dies(enemy)).
-effect(dies(enemy), neg(dying(enemy))) :- auto(dies(enemy)).
-effect(dies(enemy), neg(intention(shooter, dies(enemy)))) :- auto(dies(enemy)).
+precond(dying(enemy), dies(enemy)).
+precond(dying(enemy), neg(alive(enemy))).
+effect(dies(enemy), neg(alive(enemy))).
+effect(dies(enemy), neg(dying(enemy))).
+effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
 
 
 % ------------ SCENARIO -------------------------------- %
