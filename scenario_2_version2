@@ -32,30 +32,21 @@ cons(F,T,E):-  occurs(E,T), precond(F,E), holds(F,T).
 cons(E1,T1,E3):- cons(E1,T1,C2), cons(C2,T2,E3), event(E1), event(E3), T2>T1.
 
 
-%% MODALITY SPECIFICATION %%
 
-%modality(I;V) :- right(I), value(V).
+%% ETHICAL SPECIFICATION %%
+
+modality(I;V) :- right(I), value(V).
 modality(I) :- right(I).
 m_Weight(M,1) :- modality(M).
 t_Weight(E,1) :- effect(E,involves(X)).
-%value(helpfulness).
 right(life).
-right(save_own_life).
 
-
-%% ETHICAL EVENT SPECIFICATION %%
-
-% VALUES
-%effect(cure(X,G), displays(helpfulness)):- auto(cure(X,G)).
-%effect(kill(X,G), neg(displays(helpfulness))):- auto(kill(X,G)).
-
-% RIGHTS:
+%% --- RIGHTS 
 effect(kill(X), neg(life)) :- event(kill(X)).
 effect(dies(X), neg(life)) :- event(dies(X)).
-effect(shoot(X), neg(life)) :- event(shoot(X)).
 
 
-%% THEORY OF THE GOOD %%
+%% MODEL OF THE GOOD %%
 
 % VALUES
 %good(E,X,M):- effect(E,involves(X)), effect(E,displays(M)), value(M).
@@ -71,7 +62,6 @@ weightedBad(E,N1*N2,M) :- bad(E,X,M), m_Weight(M,N1), t_Weight(E,N2).
 weight(E,1) :- good(E,X,M).
 weight(E,1) :- bad(E,X,M).
 final_weight(E,N1-N3) :- event(E), N1=#sum{N2 : weightedGood(E,N2,M1)}, N3=#sum{N4 : weightedBad(E,N4,M2)}.
-
 
 
 %% THEORIES OF THE RIGHT %%
@@ -105,13 +95,6 @@ imp(dde4,A) :- imp(benefitsCosts,A).
 per(dde,A) :-  event(A), not imp(dde1,A), not imp(dde2,A), not imp(dde3,A), not imp(dde4,A). 
 
 
-effect(kill(X), involves(X)) :- event(kill(X)).
-effect(dies(X), involves(X)) :- event(dies(X)).
-effect(shoot(X), involves(X)) :- event(shoot(X)).
-effect(defend_self(X), involves(X)) :- event(defend_self(X)).
-effect(save_own_life(X), involves(X)) :- event(save_own_life(X)).
-
-
 %%% ------------ CONTEXT -------------------------------- %%%
 
 % ------------ Fluent declaration-------------------------------- %
@@ -140,12 +123,18 @@ auto(kill(enemy)).
 auto(dies(enemy)).
 auto(save_own_life(shooter)).
 
+effect(kill(X), involves(X)) :- event(kill(X)).
+effect(dies(X), involves(X)) :- event(dies(X)).
+effect(shoot(X), involves(X)) :- event(shoot(X)).
+effect(defend_self(X), involves(X)) :- event(defend_self(X)).
+effect(save_own_life(X), involves(X)) :- event(save_own_life(X)).
+
+
 % SHOOTER SEES (ARMED) ENEMY 
 precond(alive(enemy), see_armed_enemy(shooter)) :- action(see_armed_enemy(shooter)).
+effect(see_armed_enemy(shooter), intention(shooter, defend_self(shooter))).
 effect(see_armed_enemy(shooter), believes(shooter, cons(load(gun), defend_self(shooter)))).
 effect(see_armed_enemy(shooter), believes(shooter, cons(defend_self(shooter), save_own_life(shooter)))).
-effect(see_armed_enemy(shooter), intention(shooter, defend_self(shooter))).
-
 
 % LOAD
 precond(alive(enemy), load(gun)).
@@ -153,8 +142,10 @@ precond(neg(loaded(gun)), load(gun)).
 effect(load(gun), loaded(gun)).
 effect(load(gun), neg(intention(shooter, load(gun)))). 
 
-% DEFEND SELF 
+% DEFEND SELF
+
 precond(loaded(gun), defend_self(shooter)).
+effect(defend_self(shooter), neg(intention(shooter, defend_self(shooter)))).
 
 % SHOOT
 precond(alive(enemy), shoot(enemy)).
@@ -166,6 +157,7 @@ effect(shoot(enemy), neg(loaded(gun))).
 
 % KILL (auto event)
 auto(kill(enemy)) :- involves(enemy).
+
 precond(alive(enemy), kill(enemy)).
 precond(flying(bullet), kill(enemy)).
 effect(kill(enemy), neg(flying(bullet))).
@@ -179,7 +171,7 @@ precond(dying(enemy), neg(alive(enemy))).
 effect(dies(enemy), neg(alive(enemy))).
 effect(dies(enemy), neg(dying(enemy))).
 effect(dies(enemy), neg(intention(shooter, dies(enemy)))).
-effect(dies(enemy), neg(intention(shooter, defend_self(shooter)))).
+%effect(dies(enemy), neg(intention(shooter, defend_self(shooter)))).
 
 % SAVE OWN LIFE 
 precond(dying(enemy), save_own_life(shooter)).
