@@ -40,8 +40,6 @@ m_Weight(M,1) :- modality(M).
 t_Weight(E,1) :- effect(E,involves(X)).
 %value(helpfulness).
 right(life).
-%right(save_own_life).
-
 
 %% ETHICAL EVENT SPECIFICATION %%
 
@@ -52,12 +50,7 @@ right(life).
 % RIGHTS:
 effect(kill(X), neg(life)) :- event(kill(X)).
 effect(dies(X), neg(life)) :- event(dies(X)).
-effect(shoot(X), neg(life)) :- event(shoot(X)).
-
-% BELIEVES
-believes(X, cons(A, B)) :- cons(A, T, B), time(T), agent(X).
-
-
+%effect(shoot(X), neg(life)) :- event(shoot(X)).
 
 %% THEORY OF THE GOOD %%
 
@@ -124,13 +117,6 @@ fluent(loaded(gun)).
 fluent(flying(bullet)).
 fluent(dying(enemy)).
 
-%fluent(intention(shooter, load(gun))).
-%fluent(intention(shooter, shoot(enemy))).
-%fluent(intention(shooter, kill(enemy))).
-%fluent(intention(shooter, dies(enemy))).
-
-%nonInertial(dying(enemy)). 
-
 % ------------ INITIAL SITUATION -------------------------------- %
 agent(shooter).
 agent(enemy).
@@ -144,6 +130,7 @@ initially(neg(dying(enemy))).
 
 
 % ------------ EVENT SPECIFICATION ------------------------------ %
+
 action(see_armed_enemy(shooter)).
 action(see_enemy(shooter)).
 action(load(gun)). 
