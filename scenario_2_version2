@@ -54,8 +54,6 @@ effect(kill(X), neg(life)) :- event(kill(X)).
 effect(dies(X), neg(life)) :- event(dies(X)).
 effect(shoot(X), neg(life)) :- event(shoot(X)).
 
-% BELIEVES
-believes(X, cons(A, B)) :- cons(A, T, B), time(T), agent(X).
 
 %% THEORY OF THE GOOD %%
 
