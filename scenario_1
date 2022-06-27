@@ -110,7 +110,6 @@ initially(neg(dying(enemy))).
 
 % ------------ EVENT SPECIFICATION ------------ %
 
-action(see_armed_enemy(shooter)).
 action(see_enemy(shooter)).
 action(load(gun)). 
 action(shoot(enemy)).
