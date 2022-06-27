@@ -83,6 +83,12 @@ m_Weight(M,1) :- modality(M).
 t_Weight(E,1) :- effect(E,involves(X)).
 right(life).
 
+%% RIGHTS 
+effect(kill(X), neg(life)) :- event(kill(X)).
+effect(dies(X), neg(life)) :- event(dies(X)).
+effect(shoot(X), neg(life)) :- event(shoot(X)). 
+
+
 % ------------ Fluent declaration ------------ %
 
 fluent(alive(enemy)).
