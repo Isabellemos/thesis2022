@@ -3,7 +3,6 @@
 % ACTION
 event(A):- action(A).
 event(U):- auto(U).
-event(A) :- act(A).
 
 
 % FLUENTS
