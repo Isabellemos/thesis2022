@@ -13,7 +13,6 @@ holds(F,0):- initially(F).
 holds(F,T):- initiates(E,F,T-1), time(T).
 holds(F,T):- holds(F,T-1), not clipped(F,T-1), not nonInertial(F), time(T).
 clipped(F,T):- terminates(E,F,T).
-clipped(neg(F), T) :- holds(F, T+1), time(T), fluent(F). 
 
 % EVENTS
 incomplete(E,T):- precond(F,E), not holds(F,T), time(T). 
